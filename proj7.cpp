@@ -25,7 +25,7 @@ int main()
 		printf("\nP%d\t\t%dms\t\t",i,resptime[i]);
 		if(type[i]==1)
 		{
-			printf("Interactive\tHigh");
+			printf("Interactive\t     High");
 		}
 		else
 		{
