@@ -1,35 +1,35 @@
 #include<stdio.h>
 int main()
 {
-	int i, types[20],n;
-	int rtime[20];
-	printf("Number of  total process: ");
+	int i, type[20],n;
+	int resptime[20];
+	printf("Number of process: ");
 	scanf("%d",&n);
-	printf("Enter data\n");
+	printf("Enter the data\n");
 	for(i=0;i<n;i++)
 	{
 		printf("Response time of P%d (in milliseconds): ",i);
-		scanf("%d",&rtime[i]);
-		if(rtime[i]==1)
+		scanf("%d",&resptime[i]);
+		if(resptime[i]<1000)
 		{
-			types[i]=1;
+			type[i]=1;
 		}
 		else
 		{
-			types[i]=0;
+			type[i]=0;
 		}
 	}
-	printf("Process No.\tResponse Time\tType\t\tPriority");
+	printf("Process Number\tResponse Time\tType\t\tPriority");
 	for(i=0;i<n;i++)
 	{
-		printf("\nP%d\t\t\t%dms\t\t\t",i,rtime[i]);
-		if(types[i]==1)
+		printf("\nP%d\t\t%dms\t\t",i,resptime[i]);
+		if(type[i]==1)
 		{
-			printf("Process is Interactive\tHigh");
+			printf("Interactive\tHigh");
 		}
 		else
 		{
-			printf("process is Non-Interactive\tLow");
+			printf("Non-Interactive\tLow");
 		}
 	}
 }
