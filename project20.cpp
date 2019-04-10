@@ -3,7 +3,7 @@ int main()
 {
 	int p[30],bt[30], su[30], wt[30],tat[30],i, k, n, temp;
 	float wtavg, tatavg;
-	printf("Process in the queue --- ");
+	printf("Process in the queue starts from here --- ");
 	scanf("%d",&n);
 	for(i=0;i<n;i++)
 	{
@@ -43,7 +43,7 @@ int main()
 		wtavg = wtavg + wt[i];
 		tatavg = tatavg + tat[i];
 	}
-	printf("\n im PROCESS\t\t im TEACHER/im STUDENT PROCESS  \t this isBURST TIME\tWAITING TIME\tTURNAROUND TIME");
+	printf("\n im PROCESS\t\t im TEACHER/im STUDENT PROCESS  \t this is BURST TIME\tWAITING TIME\tTURNAROUND TIME");
 	
 	for(i=0;i<n;i++)
 	{
