@@ -1,57 +1,90 @@
 #include<stdio.h>
+#include<pthread.h>
+#include<stdlib.h>
+#include<semaphore.h>
+int student[3][4]={0};
+void *teacher();
+void *stud1();
+void *stud2();
+void *stud3();
+pthread_mutex_t l;
+int ab1,ab2;
+int r1,r2;
+
 int main()
-{
-	int p[30],bt[30], su[30], wt[30],tat[30],i, k, n, temp;
-	float wtavg, tatavg;
-	printf("Process in the queue starts from here--- ");
-	scanf("%d",&n);
-	for(i=0;i<n;i++)
-	{
-		p[i] = i;
-		printf("This is Burst time process %d --- ", i);
-		scanf("%d",&bt[i]);
-		printf("This is teacher and student starting  (0/1) ? --- ");
-		scanf("%d", &su[i]);
-	}
+{	
+    printf("\nWELCOME TO THE PROJECT \n\t");
+	printf("\t\t\t---IM the Students-Teacher process sync.---\n");
+	pthread_mutex_init(&l,NULL);
 	
-	for(i=0;i<n;i++)
+	student[1][1]=1;
+	student[2][2]=2;student[3][3]=1;
+	pthread_t t_thread;
+	pthread_t s_thread;
+	printf("Resources Details: \n\t\tPress '1' for pen\n\t\tPress '2' for paper \n\t\tPress '3' for question paper \n"); 
+	
+	while(1)
 	{
-		for(k=i+1;k<n;k++)
+		if(student[1][4]==1 && student[2][4]==1 && student[3][4]==1){break;}
+		pthread_create(&t_thread, NULL, teacher, NULL);
+	    pthread_join(t_thread,NULL);
+	    
+		if((ab1==1 && ab2==2 || ab2==1 && ab1==2 ) && student[3][4]==0)
 		{
-			if(su[i] > su[k])
-			{
-				temp=p[i];
-				p[i]=p[k];
-				p[k]=temp;
-				
-				temp=bt[i];
-				bt[i]=bt[k];
-				bt[k]=temp;
-				
-				temp=su[i];
-				su[i]=su[k];
-				su[k]=temp;
-			}
+			pthread_create(&s_thread, NULL, stud3, NULL);
+			pthread_join(s_thread,NULL);
+		}
+		else if((ab1==1 && ab2==3 || ab2==1 && ab1==3 ) && student[2][4]==0)
+		{
+			pthread_create(&s_thread, NULL, stud2, NULL);
+			pthread_join(s_thread,NULL);
+		}
+		else if((ab1==2 && ab2==3 || ab2==2 && ab1==3 ) && student[1][4]==0)
+		{
+			pthread_create(&s_thread, NULL, stud1, NULL);
+			pthread_join(s_thread,NULL);
+		}
+		else
+		{
+			printf("\n\tError occured!: please try again with different choices.\n");
 		}
 	}
-	wtavg = wt[0] = 0;
-	tatavg = tat[0] = bt[0];
-	for(i=1;i<n;i++)
-	{
-		wt[i] = wt[i-1] + bt[i-1];
-		tat[i] = tat[i-1] + bt[i];
-		wtavg = wtavg + wt[i];
-		tatavg = tatavg + tat[i];
-	}
-	printf("\n im PROCESS\t im TEACHER/im STUDENT PROCESS \t this is BURST TIME     \tWAITING TIME      \tTURNAROUND TIME");
+	printf("completed");
 	
-	for(i=0;i<n;i++)
-	{
-		printf("\n\%d \t\t\t %d \t\t\t\t %d \t\t\t %d \t\t\t%d ",p[i],su[i],bt[i],wt[i],tat[i]);
-	}
+	
+}
 
-	printf("\nAverage Waiting Time is --- %f",wtavg/n);
-	printf("\nAverage Turnaround Time is --- %f",tatavg/n);
+void *teacher()
+{
+	pthread_mutex_lock(&l);
+	printf("\nFirst Resource on shared tabel:-\t");
+	scanf("%d",&ab1);
+	printf("Second Resource on shared tabel:-\t");
+	scanf("%d",&ab2);
+	pthread_mutex_unlock(&l);
+}
 
-	return 0;
+void *stud2()
+{	
+	pthread_mutex_lock(&l);
+	printf("\nChoices have = 'pen', 'question paper'\n");
+	student[2][4]=1;
+	printf("\n\t Student 2 has completed its assignment. \n");
+	pthread_mutex_unlock(&l);
+}
+void *stud3()
+{	
+	pthread_mutex_lock(&l);
+	printf("\nChoices Made = 'pen', 'paper'\n");
+	student[3][4]=1;
+	printf("\n\t Student 3 has completed its assignment.\n");
+	pthread_mutex_unlock(&l);
+}
+void *stud1()
+{	
+	pthread_mutex_lock(&l);
+	printf("\nChoices Made = 'paper', 'question_paper'\n");
+	student[1][4]=1;
+	printf("\n\tStudent 1 has completed its assignment.\n");	
+	pthread_mutex_unlock(&l);
 }
