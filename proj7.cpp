@@ -10,7 +10,7 @@ int main()
 	{
 		printf("Response time of P%d (in milliseconds): ",i);
 		scanf("%d",&resptime[i]);
-		if(resptime[i]<1000)
+		if(resptime[i]>1000)
 		{
 			type[i]=1;
 		}
@@ -25,7 +25,7 @@ int main()
 		printf("\nP%d\t\t%dms\t\t",i,resptime[i]);
 		if(type[i]==1)
 		{
-			printf("Interactive\t     High");
+			printf("Interactive\tHigh");
 		}
 		else
 		{
